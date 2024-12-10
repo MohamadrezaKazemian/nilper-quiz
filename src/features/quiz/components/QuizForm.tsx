@@ -17,7 +17,7 @@ const QuizForm = () => {
 
   // Load and transform the JSON at the beginning
   useEffect(() => {
-    fetch("/public/nilper.json")
+    fetch("/nilper.json")
       .then((response) => response.json())
       .then((data) => {
         const transformed = transformJson(data) as TransformedDataItem[];
