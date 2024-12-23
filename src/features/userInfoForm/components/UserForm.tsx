@@ -31,9 +31,12 @@ const UserForm: React.FC = () => {
   };
 
   return (
-    <Layout className="max-w-md mx-auto p-10 bg-slate-200 w-full rounded-md">
+    <Layout>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full max-w-md space-y-3 rounded-md bg-slate-200 p-10"
+        >
           {/* Name Field */}
           <FormField
             control={form.control}
@@ -44,7 +47,7 @@ const UserForm: React.FC = () => {
                 <FormControl>
                   <Input {...field} placeholder="نام خود را وارد کنید" />
                 </FormControl>
-                <FormMessage className="p-0 m-0">
+                <FormMessage className="m-0 p-0">
                   {form.formState.errors.name?.message}
                 </FormMessage>
               </FormItem>
@@ -77,12 +80,12 @@ const UserForm: React.FC = () => {
             name="phoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>شماره موبایل</FormLabel>
+                <FormLabel>شماره تماس</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     type="text" // Use text to allow Persian and Arabic input
-                    placeholder="شماره موبایل خود را وارد کنید"
+                    placeholder="شماره تماس خود را وارد کنید"
                     inputMode="numeric"
                     onInput={(e) => {
                       const input = e.target as HTMLInputElement;
@@ -90,7 +93,8 @@ const UserForm: React.FC = () => {
                       // Convert Persian digits to English digits
                       const persianToEnglish = input.value.replace(
                         /[۰-۹]/g,
-                        (char) => String.fromCharCode(char.charCodeAt(0) - 1728)
+                        (char) =>
+                          String.fromCharCode(char.charCodeAt(0) - 1728),
                       );
 
                       // Remove any non-numeric characters (Arabic, Persian, or English)

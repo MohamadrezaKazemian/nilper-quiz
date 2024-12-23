@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/Layout";
-import { Question } from "../../interfaces/quiz";
+import { Question, QuestionStepProps } from "../../interfaces/quiz";
 import { animationVariants } from "@/utils/animationHelpers";
 import { CircleHelp } from "lucide-react";
 import { CircleChevronLeft } from "lucide-react";
@@ -22,12 +22,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-type QuestionStepProps = {
-  currentStep: number;
-  question: Question;
-  onOptionSelect: (optionValue: string) => void;
-  onPrevious: () => void;
-};
 
 const QuestionStep = ({
   currentStep,
@@ -36,7 +30,7 @@ const QuestionStep = ({
   onPrevious,
 }: QuestionStepProps) => {
   return (
-    <Layout className="flex flex-col justify-center items-center w-full max-w-screen-sm mx-auto">
+    <Layout>
       <motion.div
         key={currentStep}
         variants={animationVariants}
@@ -44,23 +38,23 @@ const QuestionStep = ({
         animate="visible"
         exit="exit"
         transition={{ duration: 0.6 }}
-        className="w-full bg-neutral-200 p-5 sm:p-10 pt-10 sm:pt-16 border-2 rounded-md relative"
+        className="relative w-full max-w-screen-sm rounded-md border-2 bg-neutral-200 p-5 pt-10 sm:p-10 sm:pt-16"
       >
-        <div className="absolute top-0 left-0 right-0 flex  -translate-y-1/2 justify-center w-full">
+        <div className="absolute left-0 right-0 top-0 flex w-full -translate-y-1/2 justify-center">
           <a
             href="https://nilperoffice.com/"
             target="_blank"
-            className=" hover:animate-pulse"
+            className="hover:animate-pulse"
           >
             <img
               src="https://nilperoffice.com/Portals/0/Logo.png"
-              className="shadow-2xl bg-white  shadow-nilperRed border  p-2 rounded-md w-full max-w-20 sm:max-w-32"
+              className="w-full max-w-20 rounded-md border bg-white p-2 shadow-2xl shadow-nilperRed sm:max-w-32"
               alt="nilper"
             />
           </a>
         </div>
-        <div className="flex gap-2 items-center relative w-fit">
-          <h2 className="text-sm sm:text-xl font-semibold">
+        <div className="relative flex w-fit items-center gap-2">
+          <h2 className="text-sm font-semibold sm:text-xl">
             {question.question.fa}
           </h2>
           <TooltipProvider>
@@ -68,24 +62,25 @@ const QuestionStep = ({
               <TooltipTrigger className=" ">
                 {question.help && (
                   <Drawer>
-                    <DrawerTrigger>
-                      {" "}
-                      <CircleHelp className=" cursor-pointer w-5 sm:w-7" />
+                    <DrawerTrigger asChild>
+                      <div>
+                        <CircleHelp className="w-5 cursor-pointer sm:w-7" />
+                      </div>
                     </DrawerTrigger>
                     <DrawerContent>
                       <DrawerHeader>
                         <DrawerTitle>
-                          منظور از {question.question.fa.replace("؟", " ")}
+                          منظور از {question.question.fa.replace("؟", " ")}{" "}
                           چیست؟
                         </DrawerTitle>
                         <DrawerDescription>
-                          <p className="text-sm sm:text-xl sm:text-justify text-right">
+                          <span className="text-right text-sm sm:text-justify sm:text-xl">
                             {question.help}
-                          </p>
+                          </span>
                         </DrawerDescription>
                       </DrawerHeader>
                       <DrawerFooter>
-                        <DrawerClose>
+                        <DrawerClose asChild>
                           <Button variant="default" className="w-full">
                             متوجه شدم
                           </Button>
@@ -102,7 +97,7 @@ const QuestionStep = ({
           </TooltipProvider>
         </div>
 
-        <p className="mb-3 my-2 text-sm  sm:text-lg">
+        <p className="my-2 mb-3 text-sm sm:text-lg">
           {question.question.description}
         </p>
 
@@ -112,15 +107,15 @@ const QuestionStep = ({
               onClick={() => onOptionSelect(option.value)}
               variant={"outline"}
               key={index}
-              className="w-full p-2 sm:p-6 text-sm sm:text-xl"
+              className="w-full p-2 text-sm sm:p-6 sm:text-xl"
             >
               {option.label}
             </Button>
           ))}
         </div>
-        <div className="absolute  -translate-x-4 sm:translate-y-4 translate-y-1 right-0 top-0">
+        <div className="absolute right-0 top-0 -translate-x-4 translate-y-1 sm:translate-y-4">
           <CircleChevronLeft
-            className="-scale-x-100 cursor-pointer transition-all hover:-translate-y-[1px] w-5 sm:w-full"
+            className="w-5 -scale-x-100 cursor-pointer transition-all hover:-translate-y-[1px] sm:w-full"
             onClick={onPrevious}
           />
         </div>

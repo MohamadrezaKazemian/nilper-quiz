@@ -17,3 +17,10 @@ export type Question = {
 export type TransformedDataItem = {
   [key: string]: any; // Generic object type for transformed JSON items
 };
+
+export type QuestionStepProps = {
+  currentStep: number;
+  question: Question;
+  onOptionSelect: (optionValue: string) => void;
+  onPrevious: () => void;
+};

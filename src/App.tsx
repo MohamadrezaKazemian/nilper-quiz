@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import QuizForm from "@/features/quiz/components/QuizForm"; // Adjust path based on your folder structure
+import QuizForm from "@/features/textQuiz/components/QuizForm"; // Adjust path based on your folder structure
 import UserForm from "@/features/userInfoForm/components/UserForm";
 
 function App() {

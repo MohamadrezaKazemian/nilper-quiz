@@ -6,14 +6,14 @@ interface LayoutProps {
   className?: string; // Optional className prop
 }
 
-const Layout = ({ children, className }: LayoutProps) => {
+const Layout = ({ children }: LayoutProps) => {
   return (
     <section
-      className={
-        "bg-office-background bg-cover bg-center  w-full p-5 md:p-10  min-h-screen mx-auto flex items-center"
-      }
+      className={cn(
+        "mx-auto flex min-h-screen w-full flex-col items-center justify-center bg-office-background bg-cover bg-center p-5 md:p-10",
+      )}
     >
-      <div className={cn(className)}>{children}</div>
+      {children}
     </section>
   );
 };
