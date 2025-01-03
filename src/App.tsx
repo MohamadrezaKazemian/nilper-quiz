@@ -3,6 +3,7 @@ import QuizForm from "@/features/textQuiz/components/QuizForm"; // Adjust path b
 import UserForm from "@/features/userInfoForm/components/UserForm";
 
 function App() {
+  console.log("version 1.0.0");
   return (
     <Routes>
       {/* <Route path="/" element={<HomePage />} /> */}

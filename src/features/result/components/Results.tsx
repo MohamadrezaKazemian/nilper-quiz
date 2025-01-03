@@ -11,13 +11,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import useTextQuizStore from "../../textQuiz/store/TextQuizStore";
+import useTextQuizStore from "../../textQuiz/store/textQuizStore";
 import { ImageData } from "../interfaces/interfaces";
-
+import persianSorter from "../utils/persianSorter";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import useSendQuiz from "@/features/shared/hooks/useSendQuiz";
+import useSelectedSitsStore from "@/features/sitsQuiz/store/sitsStore";
+import useQuizAnswersStore from "@/features/shared/store/quizAnswersStore";
+import useUserInfoStore from "@/features/userInfoForm/store/UserInfoStore";
 const Results = ({ onRestart }: { onRestart: () => void }) => {
   const { textQuizResult } = useTextQuizStore();
+  const { selectedSits } = useSelectedSitsStore();
+  const { quizAnswers } = useQuizAnswersStore();
+  const { userInfo } = useUserInfoStore();
   const [images, setImages] = useState<ImageData[]>([]);
-  console.log("textQuizResult", textQuizResult);
+  const { data, error, isLoading } = useSendQuiz({
+    answers: quizAnswers,
+    selectedSits: selectedSits,
+    userInfo: {
+      fullName: `${userInfo?.name ?? ""} ${userInfo?.lastName ?? ""}`,
+      phoneNumber: userInfo?.phoneNumber ?? "",
+    },
+  });
 
   useEffect(() => {
     // Fetch the images.json file
@@ -49,11 +65,11 @@ const Results = ({ onRestart }: { onRestart: () => void }) => {
         transition={{ duration: 0.6 }}
         className="relative w-full rounded-md border-2 bg-neutral-200 p-5 pt-10 sm:p-10 sm:pt-16"
       >
-        <h2 className="mb-4 text-center text-2xl">نتیجه نهایی</h2>
+        <h2 className="mb-4 text-center text-2xl font-bold">نتیجه نهایی</h2>
         <div
-          className={`grid grid-cols-1 items-center justify-center gap-10 md:flex`}
+          className={`grid grid-cols-1 items-center justify-center gap-10 lg:flex`}
         >
-          {textQuizResult.slice(0, 3).map((product: any, index: number) => {
+          {textQuizResult?.slice(0, 3).map((product: any, index: number) => {
             const imageSrc = getImageSrc(product.link); // Get the image src based on the product link
 
             return (
@@ -63,9 +79,24 @@ const Results = ({ onRestart }: { onRestart: () => void }) => {
                 target="_blank"
                 className="transition-all duration-200 hover:scale-[0.97]"
               >
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-center">
+                <Card
+                  className={cn("", {
+                    "bg-green-100": index + 1 === 1,
+                  })}
+                >
+                  <CardHeader className="relative">
+                    <Badge
+                      variant="secondary"
+                      className={cn(
+                        "pointer-events-none absolute right-0 top-0 -translate-x-2 translate-y-2",
+                        {
+                          "bg-[#FFD700]": index + 1 === 1,
+                        },
+                      )}
+                    >
+                      اولویت {persianSorter(index + 1)}
+                    </Badge>
+                    <CardTitle className="font-Roboto text-center">
                       {product.model}
                     </CardTitle>
                   </CardHeader>
@@ -73,7 +104,7 @@ const Results = ({ onRestart }: { onRestart: () => void }) => {
                     <img
                       src={imageSrc}
                       alt={product.model}
-                      className="h-full w-full"
+                      className="h-full w-full max-w-xs mix-blend-multiply lg:max-w-full"
                     />
                   </CardContent>
                   <CardFooter className="flex justify-center">

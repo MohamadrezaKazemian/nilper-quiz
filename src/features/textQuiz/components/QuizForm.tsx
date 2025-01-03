@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { questions } from "constants/questions";
-import { TransformedDataItem } from "../interfaces/quiz";
+import { Option, TransformedDataItem } from "../interfaces/quiz";
 import QuestionStep from "./subset/QuestionStep";
 import Results from "../../result/components/Results";
 import { transformJson } from "@/utils/jsonTransformer";
-import useTextQuizStore from "../store/TextQuizStore";
+import useTextQuizStore from "../store/textQuizStore";
 import SitsQuestions from "@/features/sitsQuiz/components/SitsQuestions";
+import useUserInfoStore from "@/features/userInfoForm/store/UserInfoStore";
+import isQuestionIgnored from "../utils/isQuestionIgnored";
+import useQuizAnswersStore from "@/features/shared/store/quizAnswersStore";
 
 const QuizForm = () => {
   const { setTextQuizResult } = useTextQuizStore();
+  const { setQuizAnswers, quizAnswers, deleteLastQuizAnswer } =
+    useQuizAnswersStore();
+  console.log("quizAnswers", quizAnswers);
 
   // Current question index
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -45,29 +51,46 @@ const QuizForm = () => {
   }, []);
 
   // 2. Handle option selection and filter data
-  const handleOptionSelect = (optionValue: string) => {
+  const handleOptionSelect = (selectedOption: Option) => {
     const currentQuestion = questions[currentStep];
-
-    // Filter the data based on the selected option
-    const newFilteredData = filteredData.filter(
-      (item) => item[currentQuestion.question.en] === optionValue,
+    const shouldIgnore = isQuestionIgnored(
+      currentQuestion.question.en,
+      selectedOption.value,
     );
+    console.log("shouldIgnore", shouldIgnore);
+    console.log("currentQuestion.question", currentQuestion);
 
-    // Push the new filtered data onto the history stack
-    setFilteredDataHistory((prevHistory) => [...prevHistory, newFilteredData]);
+    if (shouldIgnore) {
+      setCurrentStep((prevStep) => prevStep + 1);
+    } else {
+      console.log("currentQuestion", currentQuestion);
+      // Filter the data based on the selected option
+      const newFilteredData = filteredData.filter(
+        (item) => item[currentQuestion.question.en] === selectedOption.value,
+      );
+      setQuizAnswers({
+        question: currentQuestion.question.fa,
+        answer: selectedOption.label,
+      });
+      // Push the new filtered data onto the history stack
+      setFilteredDataHistory((prevHistory) => [
+        ...prevHistory,
+        newFilteredData,
+      ]);
 
-    // Update our main filteredData
-    setFilteredData(newFilteredData);
+      // Update our main filteredData
+      setFilteredData(newFilteredData);
 
-    // Move to the next question
-    setCurrentStep((prevStep) => prevStep + 1);
+      // Move to the next question
+      setCurrentStep((prevStep) => prevStep + 1);
+    }
   };
 
   // 3. Go back to the previous text question & revert filtered data
   const goToPreviousQuestion = () => {
     if (currentStep > 0) {
       setCurrentStep((prevStep) => prevStep - 1);
-
+      deleteLastQuizAnswer();
       setFilteredDataHistory((prevHistory) => {
         const updatedHistory = [...prevHistory];
         // Remove the latest snapshot
@@ -94,6 +117,7 @@ const QuizForm = () => {
     // We want to revert to step = questions.length - 1
     if (currentStep > 0) {
       setCurrentStep((prevStep) => prevStep - 1);
+      deleteLastQuizAnswer();
 
       setFilteredDataHistory((prevHistory) => {
         const updatedHistory = [...prevHistory];

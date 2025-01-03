@@ -1,11 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-
-// Define the shape of the store's state
-interface TextQuizStoreState {
-  textQuizResult: any;
-  setTextQuizResult: (result: object) => void;
-}
+import { TextQuizStoreState } from "../interfaces/store";
 
 // Create the Zustand store with persistence
 const useTextQuizStore = create<TextQuizStoreState>()(

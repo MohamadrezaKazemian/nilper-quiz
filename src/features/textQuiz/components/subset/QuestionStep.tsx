@@ -104,7 +104,7 @@ const QuestionStep = ({
         <div className="flex w-full gap-3">
           {question.options.map((option, index) => (
             <Button
-              onClick={() => onOptionSelect(option.value)}
+              onClick={() => onOptionSelect(option)}
               variant={"outline"}
               key={index}
               className="w-full p-2 text-sm sm:p-6 sm:text-xl"
@@ -114,10 +114,12 @@ const QuestionStep = ({
           ))}
         </div>
         <div className="absolute right-0 top-0 -translate-x-4 translate-y-1 sm:translate-y-4">
-          <CircleChevronLeft
-            className="w-5 -scale-x-100 cursor-pointer transition-all hover:-translate-y-[1px] sm:w-full"
-            onClick={onPrevious}
-          />
+          {currentStep !== 0 && (
+            <CircleChevronLeft
+              className="w-5 -scale-x-100 cursor-pointer transition-all hover:-translate-y-[1px] sm:w-full"
+              onClick={onPrevious}
+            />
+          )}
         </div>
       </motion.div>
     </Layout>

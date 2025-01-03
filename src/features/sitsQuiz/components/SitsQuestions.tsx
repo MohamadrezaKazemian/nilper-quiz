@@ -6,15 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormItem, FormControl, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import useTextQuizStore from "@/features/textQuiz/store/TextQuizStore";
+import useTextQuizStore from "@/features/textQuiz/store/textQuizStore";
 import { CircleChevronLeft } from "lucide-react";
+import useSelectedSitsStore from "../store/sitsStore";
 
 // Define the Zod schema: must choose 1 to 3 images
 const formSchema = z.object({
-  images: z
-    .array(z.string())
-    .min(3, "۳ مورد را انتخاب کنید")
-    .max(3, "۳ مورد را انتخاب کنید"),
+  images: z.array(z.string()).max(3, "۳ مورد را انتخاب کنید"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -32,6 +30,9 @@ interface Props {
 }
 
 const SitsQuestions: React.FC<Props> = ({ setIsQuizFinished, onBack }) => {
+  const { selectedSits, setSelectedSits } = useSelectedSitsStore();
+  console.log("selectedSits", selectedSits);
+
   const { textQuizResult, setTextQuizResult } = useTextQuizStore();
   const { toast } = useToast();
 
@@ -67,6 +68,7 @@ const SitsQuestions: React.FC<Props> = ({ setIsQuizFinished, onBack }) => {
 
   const { handleSubmit, watch, setValue } = form;
   const selectedImages = watch("images");
+  console.log("selectedImages", selectedImages);
 
   // 2. Toggle image selection
   const toggleImageSelection = (img: string) => {
@@ -86,7 +88,7 @@ const SitsQuestions: React.FC<Props> = ({ setIsQuizFinished, onBack }) => {
         });
       } else {
         toast({
-          title: "فقط ۳ مورد را می‌توانید انتخاب کنید",
+          title: " حداکثر ۳ مورد را می‌توانید انتخاب کنید",
           variant: "destructive",
         });
       }
@@ -95,6 +97,7 @@ const SitsQuestions: React.FC<Props> = ({ setIsQuizFinished, onBack }) => {
 
   // 3. On form submit
   const onSubmit = (values: FormValues) => {
+    setSelectedSits(values.images);
     // Remove ".jpg" from each selected image
     const rawSelections = values.images.map((img) => img.replace(".jpg", ""));
 
@@ -212,7 +215,7 @@ const SitsQuestions: React.FC<Props> = ({ setIsQuizFinished, onBack }) => {
               <Button
                 type="submit"
                 className="w-full"
-                disabled={form.getValues("images").length !== 3}
+                disabled={form.getValues("images").length < 1}
               >
                 ادامه
               </Button>

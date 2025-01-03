@@ -9,7 +9,7 @@ export default defineConfig({
     tsconfigPaths(),
     ViteImageOptimizer({
       jpg: {
-        quality: 80,
+        quality: 50,
       },
     }),
   ],

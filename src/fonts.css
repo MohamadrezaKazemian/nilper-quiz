@@ -1,7 +1,15 @@
 @font-face {
   font-family: "YekanBakh";
-  src: url("/fonts/YekanBakhRegular.woff") format("woff2"),
+  src:
+    url("/fonts/YekanBakhRegular.woff") format("woff2"),
     url("/fonts/YekanBakhRegular.ttf") format("ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("/fonts/Roboto-Regular.ttf") format("ttf");
   font-weight: 400;
   font-style: normal;
 }

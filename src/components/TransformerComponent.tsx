@@ -16,10 +16,9 @@ const TransformerComponent: React.FC = () => {
       })
       .catch((error) => console.error("Error loading JSON:", error));
   }, []);
-  console.log("transformedData", transformedData);
 
   return (
-    <div className="flex ">
+    <div className="flex">
       <h1>JSON Transformer</h1>
       <h2>Original Data</h2>
       <pre>{JSON.stringify(originalData, null, 2)}</pre>

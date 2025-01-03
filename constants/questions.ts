@@ -1,11 +1,4 @@
 export const questions = [
-  // {
-  //   question: { en: "gender", fa: "جنسیت؟" },
-  //   options: [
-  //     { label: "مرد", value: "male" },
-  //     { label: "زن", value: "female" },
-  //   ],
-  // },
   {
     question: {
       en: "height_requirement",

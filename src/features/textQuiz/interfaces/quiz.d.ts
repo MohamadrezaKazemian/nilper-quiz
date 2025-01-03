@@ -21,6 +21,6 @@ export type TransformedDataItem = {
 export type QuestionStepProps = {
   currentStep: number;
   question: Question;
-  onOptionSelect: (optionValue: string) => void;
+  onOptionSelect: (optionValue: Option) => void;
   onPrevious: () => void;
 };

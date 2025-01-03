@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       fontFamily: {
         custom: ["Yekan", "sans-serif"],
+        Roboto: ["Roboto", "sans-serif"],
       },
       backgroundImage: {
         "office-background": "url('/assets/images/office.jpg')",

@@ -16,17 +16,17 @@ import {
 } from "@/components/ui/form";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-
+import useUserInfoStore from "../store/UserInfoStore";
 const UserForm: React.FC = () => {
   const navigate = useNavigate();
-
+  const { setUserInfo } = useUserInfoStore();
   const form = useForm<FormInputs>({
     resolver: zodResolver(formValidationSchema),
     mode: "onSubmit", // Change to "onBlur" or "onChange" for real-time validation
   });
 
   const onSubmit = (data: FormInputs) => {
-    console.log("Form Data: ", data);
+    setUserInfo(data);
     navigate(Routes.quiz);
   };
 
