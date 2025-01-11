@@ -14,6 +14,10 @@ const useQuizAnswersStore = create<QuizResultStoreState>()((set) => ({
     set((state) => ({
       quizAnswers: state.quizAnswers.slice(0, state.quizAnswers.length - 1), // Remove the last element of the array
     })),
+  resetAnswers: () =>
+    set({
+      quizAnswers: [], // Reset the array to empty
+    }),
 }));
 
 export default useQuizAnswersStore;

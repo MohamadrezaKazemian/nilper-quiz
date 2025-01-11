@@ -4,4 +4,5 @@ export interface QuizResultStoreState {
   quizAnswers: Answers[];
   setQuizAnswers: (result: Answers) => void;
   deleteLastQuizAnswer: () => void;
+  resetAnswers: () => void;
 }

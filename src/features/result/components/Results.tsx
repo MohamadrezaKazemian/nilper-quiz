@@ -56,7 +56,7 @@ const Results = ({ onRestart }: { onRestart: () => void }) => {
   };
 
   return (
-    <Layout className="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center">
+    <Layout className="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center overflow-x-hidden">
       <motion.div
         variants={animationVariants}
         initial="hidden"
@@ -96,7 +96,7 @@ const Results = ({ onRestart }: { onRestart: () => void }) => {
                     >
                       اولویت {persianSorter(index + 1)}
                     </Badge>
-                    <CardTitle className="font-Roboto text-center">
+                    <CardTitle className="text-center font-Roboto">
                       {product.model}
                     </CardTitle>
                   </CardHeader>

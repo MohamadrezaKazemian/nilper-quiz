@@ -13,7 +13,7 @@ import useQuizAnswersStore from "@/features/shared/store/quizAnswersStore";
 
 const QuizForm = () => {
   const { setTextQuizResult } = useTextQuizStore();
-  const { setQuizAnswers, quizAnswers, deleteLastQuizAnswer } =
+  const { setQuizAnswers, quizAnswers, deleteLastQuizAnswer, resetAnswers } =
     useQuizAnswersStore();
   console.log("quizAnswers", quizAnswers);
 
@@ -145,9 +145,11 @@ const QuizForm = () => {
 
     // Mark the quiz as not finished
     setIsQuizFinished(false);
-
-    // Clear any stored quiz results
-    setTextQuizResult([]);
+    resetAnswers();
+    setTimeout(() => {
+      // Clear any stored quiz results
+      setTextQuizResult([]);
+    }, 2000);
   };
 
   // 7. Render logic
