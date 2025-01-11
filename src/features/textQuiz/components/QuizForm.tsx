@@ -62,6 +62,10 @@ const QuizForm = () => {
 
     if (shouldIgnore) {
       setCurrentStep((prevStep) => prevStep + 1);
+      setQuizAnswers({
+        question: currentQuestion.question.fa,
+        answer: selectedOption.label,
+      });
     } else {
       console.log("currentQuestion", currentQuestion);
       // Filter the data based on the selected option
